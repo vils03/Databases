@@ -55,4 +55,6 @@ WHERE pc1.speed = pc2.speed AND pc1.ram = pc2.ram AND pc1.model < pc2.model;
 
 /*Напишете заявка, която извежда производителите на поне два различни
 персонални компютъра с честота поне 400.*/
---???
+SELECT DISTINCT maker
+FROM (product pr JOIN pc ON pr.model = pc.model) JOIN pc pc2 ON pr.model = pc2.model
+WHERE pc.speed >=400 AND pc2.speed >= 400 AND pc.code != pc2.code
