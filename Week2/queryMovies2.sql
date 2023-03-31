@@ -9,34 +9,42 @@ ON starname = name
 WHERE gender = 'M' and movietitle = 'The Usual Suspects';
  
  
-/* Íàïèøåòå çàÿâêà, êîÿòî èçâåæäà èìåíàòà íà àêòüîðèòå, ó÷àñòâàëè âúâ ôèëìè îò
-1995, ïðîäóöèðàíè îò ñòóäèî MGM*/
+/* Напишете заявка, която извежда имената на актьорите, участвали във филми от
+1995, продуцирани от студио MGM*/
 SELECT starname
 FROM movie JOIN starsin 
 ON year = movieyear
 WHERE year = 1995 and studioname = 'MGM';
  
  
-/*Íàïèøåòå çàÿâêà, êîÿòî èçâåæäà èìåíàòà íà ïðîäóöåíòèòå, êîèòî ñà
-ïðîäóöèðàëè ôèëìè íà ñòóäèî MGM*/
+/*Напишете заявка, която извежда имената на продуцентите, които са
+продуцирали филми на студио MGM*/
 SELECT DISTINCT name
 FROM movie JOIN movieexec
 ON producerc# = cert#
 WHERE studioname = 'MGM';
  
  
-/*Íàïèøåòå çàÿâêà, êîÿòî èçâåæäà èìåíàòà íà ôèëìè ñ äúëæèíà, ïî-ãîëÿìà îò
-äúëæèíàòà íà ôèëìà Star Wars*/
+/*Напишете заявка, която извежда имената на филми с дължина, по-голяма от
+дължината на филма Star Wars.*/
 SELECT mv1.title
 FROM movie as mv1, movie as mv2
 WHERE mv2.title = 'Star Wars' and mv1.length > mv2.length;
+
+--вариант 2
+SELECT title
+FROM movie
+WHERE length > (SELECT length FROM movie WHERE title='Star Wars');
  
-/*Íàïèøåòå çàÿâêà, êîÿòî èçâåæäà èìåíàòà íà ïðîäóöåíòèòå 
-ñ íåòíè àêòèâè ïîãîëåìè îò òåçè íà Stephen Spielberg*/
+/*Напишете заявка, която извежда имената на продуцентите с нетни активи 
+по-големи от тези на Stephen Spielberg.*/
 SELECT mv1.name
 FROM movieexec as mv1, movieexec as mv2
 WHERE mv2.name = 'Stephen Spielberg' and mv1.networth > mv2.networth;
  
- 
+ --вариант2
+ SELECT name
+FROM movieexec 
+WHERE networth > (SELECT networth FROM movieexec WHERE name = 'Stephen Spielberg');
  
  
