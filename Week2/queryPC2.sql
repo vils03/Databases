@@ -43,3 +43,16 @@ ON product.model = pc.model;
 SELECT DISTINCT pc1.hd
 FROM  pc as pc1, pc as pc2
 WHERE pc1.hd = pc2.hd AND pc1.code != pc2.code; 
+
+
+/*Напишете заявка, която извежда двойките модели на персонални компютри,
+които имат еднаква честота и памет. Двойките трябва да се показват само по
+веднъж, например само (i, j), но не и (j, i).*/
+SELECT pc1.model, pc2.model
+FROM pc AS pc1, pc AS pc2
+WHERE pc1.speed = pc2.speed AND pc1.ram = pc2.ram AND pc1.model < pc2.model;
+
+
+/*Напишете заявка, която извежда производителите на поне два различни
+персонални компютъра с честота поне 400.*/
+--???
