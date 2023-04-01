@@ -13,7 +13,7 @@ WHERE NOT s.name IS NULL; --or name IS NOT NULL;
 SELECT *
 FROM ships RIGHT JOIN classes ON ships.class=classes.class
 WHERE classes.class IN (SELECT name FROM ships)
-ORDER BY ships.name;								    FROM ships); 
+ORDER BY ships.name;								
 									   
 /*За всяка страна изведете имената на корабите, които никога не са
 участвали в битка*/
