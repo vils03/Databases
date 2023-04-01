@@ -28,19 +28,24 @@ SELECT maker, product.model, product.type
 FROM product
 WHERE product.type = 'Laptop' AND product.model NOT IN (SELECT model FROM laptop);
 
-/*. Íàìåðåòå âñè÷êè ïðîèçâîäèòåëè, êîèòî ïðàâÿò êàêòî ëàïòîïè, òàêà è
-ïðèíòåðè.*/
+/*Намерете всички производители, които правят както лаптопи, така и
+принтери*/
 SELECT DISTINCT p.maker
 FROM (product p JOIN printer pr ON p.model = pr.model) JOIN 
 	  (product r JOIN laptop t ON r.model = t.model) ON p.maker = r.maker;
 
-/*Íàìåðåòå ðàçìåðèòå íà òåçè òâúðäè äèñêîâå, êîèòî ñå ïîÿâÿâàò â äâà
-èëè ïîâå÷å ìîäåëà ëàïòîïè.*/
+/*Намерете размерите на тези твърди дискове, които се появяват в два
+или повече модела лаптопи.*/
 SELECT DISTINCT l1.hd
 FROM laptop l1 JOIN laptop l2 ON l1.hd = l2.hd AND l1.model != l2.model;
 
-/*. Íàìåðåòå âñè÷êè ìîäåëè ïåðñîíàëíè êîìïþòðè, êîèòî íÿìàò ðåãèñòðèðàí
-ïðîèçâîäèòåë.*/
+--Вариант2
+SELECT DISTINCT hd
+FROM laptop l
+WHERE hd = ANY (SELECT hd FROM laptop WHERE code != l.code);
+
+/*Намерете всички модели персонални компютри, които нямат регистриран
+производител.*/
 SELECT p.model
 FROM pc p LEFT JOIN product pr ON p.model = pr.model
 WHERE pr.maker IS NULL;
