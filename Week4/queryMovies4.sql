@@ -1,7 +1,7 @@
 USE Movies;
  
-/*Напишете заявка, която извежда името на продуцента и имената на
-филмите, продуцирани от продуцента на филма ‘Star Wars’.*/
+/*РќР°РїРёС€РµС‚Рµ Р·Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РёРјРµС‚Рѕ РЅР° РїСЂРѕРґСѓС†РµРЅС‚Р° Рё РёРјРµРЅР°С‚Р° РЅР°
+С„РёР»РјРёС‚Рµ, РїСЂРѕРґСѓС†РёСЂР°РЅРё РѕС‚ РїСЂРѕРґСѓС†РµРЅС‚Р° РЅР° С„РёР»РјР° вЂStar WarsвЂ™.*/
  
 SELECT title, name
 FROM movieexec JOIN movie ON cert# = producerc#
@@ -9,8 +9,8 @@ WHERE cert# = (SELECT producerc#
                 FROM movie
                 WHERE title = 'Star Wars');
  
-/*Напишете заявка, която извежда имената на продуцентите на филмите, в
-които е участвал ‘Harrison Ford*/
+/*РќР°РїРёС€РµС‚Рµ Р·Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РёРјРµРЅР°С‚Р° РЅР° РїСЂРѕРґСѓС†РµРЅС‚РёС‚Рµ РЅР° С„РёР»РјРёС‚Рµ, РІ
+РєРѕРёС‚Рѕ Рµ СѓС‡Р°СЃС‚РІР°Р» вЂHarrison Ford*/
  
 SELECT DISTINCT name
 FROM movieexec JOIN movie ON cert# = producerc#
@@ -18,22 +18,27 @@ WHERE title = ANY (SELECT movietitle
               FROM starsin
               WHERE starname = 'Harrison Ford');
  
-/*. Напишете заявка, която извежда името на студиото и имената на
-актьорите, участвали във филми, произведени от това студио, подредени
-по име на студио*/
+ --Р’Р°СЂРёР°РЅС‚2
+ SELECT DISTINCT name
+FROM (movieexec JOIN movie ON cert# = producerc#) JOIN starsin ON title = movietitle
+WHERE starname = 'Harrison Ford';
+ 
+/*РќР°РїРёС€РµС‚Рµ Р·Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РёРјРµС‚Рѕ РЅР° СЃС‚СѓРґРёРѕС‚Рѕ Рё РёРјРµРЅР°С‚Р° РЅР°
+Р°РєС‚СЊРѕСЂРёС‚Рµ, СѓС‡Р°СЃС‚РІР°Р»Рё РІСЉРІ С„РёР»РјРё, РїСЂРѕРёР·РІРµРґРµРЅРё РѕС‚ С‚РѕРІР° СЃС‚СѓРґРёРѕ, РїРѕРґСЂРµРґРµРЅРё
+РїРѕ РёРјРµ РЅР° СЃС‚СѓРґРёРѕ*/
  
 SELECT DISTINCT studioname, starname
 FROM starsin JOIN movie ON title = movietitle AND YEAR = movieyear
 ORDER BY studioname; 
  
-/*Напишете заявка, която извежда имената на актьорите, участвали във
-филми на продуценти с най-големи нетни активи*/
+/*РќР°РїРёС€РµС‚Рµ Р·Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РёРјРµРЅР°С‚Р° РЅР° Р°РєС‚СЊРѕСЂРёС‚Рµ, СѓС‡Р°СЃС‚РІР°Р»Рё РІСЉРІ
+С„РёР»РјРё РЅР° РїСЂРѕРґСѓС†РµРЅС‚Рё СЃ РЅР°Р№-РіРѕР»РµРјРё РЅРµС‚РЅРё Р°РєС‚РёРІРё*/
 SELECT starname, networth, title
 FROM  starsin JOIN (movieexec JOIN movie ON cert# = producerc#) ON title = movietitle
 WHERE networth >= ALL (SELECT networth FROM movieexec);
  
-/*. Напишете заявка, която извежда имената на актьорите, които не са
-участвали в нито един филм.*/
+/*. РќР°РїРёС€РµС‚Рµ Р·Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РёРјРµРЅР°С‚Р° РЅР° Р°РєС‚СЊРѕСЂРёС‚Рµ, РєРѕРёС‚Рѕ РЅРµ СЃР°
+СѓС‡Р°СЃС‚РІР°Р»Рё РІ РЅРёС‚Рѕ РµРґРёРЅ С„РёР»Рј.*/
 SELECT name, movietitle
 FROM moviestar LEFT JOIN starsin ON name = starname
 WHERE movietitle IS NULL;
