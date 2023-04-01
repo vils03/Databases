@@ -1,8 +1,8 @@
 USE Pc;
 
-/*. Напишете заявка, която извежда производител, модел и тип на продукт
-за тези производители, за които съответният продукт не се продава
-(няма го в таблиците PC, Laptop или Printer).*/
+/*РќР°РїРёС€РµС‚Рµ Р·Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РїСЂРѕРёР·РІРѕРґРёС‚РµР», РјРѕРґРµР» Рё С‚РёРї РЅР° РїСЂРѕРґСѓРєС‚
+Р·Р° С‚РµР·Рё РїСЂРѕРёР·РІРѕРґРёС‚РµР»Рё, Р·Р° РєРѕРёС‚Рѕ СЃСЉРѕС‚РІРµС‚РЅРёСЏС‚ РїСЂРѕРґСѓРєС‚ РЅРµ СЃРµ РїСЂРѕРґР°РІР°
+(РЅСЏРјР° РіРѕ РІ С‚Р°Р±Р»РёС†РёС‚Рµ PC, Laptop РёР»Рё Printer).*/
 SELECT p.maker, p.model, p.type
 FROM product p LEFT JOIN laptop l ON p.model = l.model
 WHERE l.model IS NULL
@@ -15,19 +15,32 @@ SELECT p.maker, p.model, p.type
 FROM product p LEFT JOIN printer l ON p.model = l.model
 WHERE l.model IS NULL;
 
-/*. Намерете всички производители, които правят както лаптопи, така и
-принтери.*/
+--Р’Р°СЂРёР°РЅС‚2
+SELECT maker, product.model, product.type
+FROM product
+WHERE product.type = 'Printer' AND product.model NOT IN (SELECT model FROM printer)
+UNION 
+SELECT maker, product.model, product.type
+FROM product
+WHERE product.type = 'PC' AND product.model NOT IN (SELECT model FROM pc)
+UNION 
+SELECT maker, product.model, product.type
+FROM product
+WHERE product.type = 'Laptop' AND product.model NOT IN (SELECT model FROM laptop);
+
+/*. ГЌГ Г¬ГҐГ°ГҐГІГҐ ГўГ±ГЁГ·ГЄГЁ ГЇГ°Г®ГЁГ§ГўГ®Г¤ГЁГІГҐГ«ГЁ, ГЄГ®ГЁГІГ® ГЇГ°Г ГўГїГІ ГЄГ ГЄГІГ® Г«Г ГЇГІГ®ГЇГЁ, ГІГ ГЄГ  ГЁ
+ГЇГ°ГЁГ­ГІГҐГ°ГЁ.*/
 SELECT DISTINCT p.maker
 FROM (product p JOIN printer pr ON p.model = pr.model) JOIN 
 	  (product r JOIN laptop t ON r.model = t.model) ON p.maker = r.maker;
 
-/*Намерете размерите на тези твърди дискове, които се появяват в два
-или повече модела лаптопи.*/
+/*ГЌГ Г¬ГҐГ°ГҐГІГҐ Г°Г Г§Г¬ГҐГ°ГЁГІГҐ Г­Г  ГІГҐГ§ГЁ ГІГўГєГ°Г¤ГЁ Г¤ГЁГ±ГЄГ®ГўГҐ, ГЄГ®ГЁГІГ® Г±ГҐ ГЇГ®ГїГўГїГўГ ГІ Гў Г¤ГўГ 
+ГЁГ«ГЁ ГЇГ®ГўГҐГ·ГҐ Г¬Г®Г¤ГҐГ«Г  Г«Г ГЇГІГ®ГЇГЁ.*/
 SELECT DISTINCT l1.hd
 FROM laptop l1 JOIN laptop l2 ON l1.hd = l2.hd AND l1.model != l2.model;
 
-/*. Намерете всички модели персонални компютри, които нямат регистриран
-производител.*/
+/*. ГЌГ Г¬ГҐГ°ГҐГІГҐ ГўГ±ГЁГ·ГЄГЁ Г¬Г®Г¤ГҐГ«ГЁ ГЇГҐГ°Г±Г®Г­Г Г«Г­ГЁ ГЄГ®Г¬ГЇГѕГІГ°ГЁ, ГЄГ®ГЁГІГ® Г­ГїГ¬Г ГІ Г°ГҐГЈГЁГ±ГІГ°ГЁГ°Г Г­
+ГЇГ°Г®ГЁГ§ГўГ®Г¤ГЁГІГҐГ«.*/
 SELECT p.model
 FROM pc p LEFT JOIN product pr ON p.model = pr.model
 WHERE pr.maker IS NULL;
