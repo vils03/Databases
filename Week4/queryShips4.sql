@@ -11,9 +11,13 @@ WHERE NOT s.name IS NULL; --or name IS NOT NULL;
 класовете, които нямат кораби, но съществуват кораби със същото име
 като тяхното.*/
 SELECT *
-FROM ships s LEFT JOIN classes c ON s.class = c.class
-WHERE NOT s.name IS NULL OR c.class IN (SELECT name
-									    FROM ships); 
+FROM ships RIGHT JOIN classes ON ships.class=classes.class
+WHERE classes.class IN (SELECT name FROM ships)
+ORDER BY ships.name;								    FROM ships); 
 									   
 /*За всяка страна изведете имената на корабите, които никога не са
 участвали в битка*/
+SELECT country, name
+FROM (classes JOIN ships ON classes.class = ships.class) LEFT JOIN outcomes ON name= ship
+WHERE ship IS NULL
+ORDER BY country;
