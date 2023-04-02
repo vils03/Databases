@@ -36,3 +36,20 @@ FROM outcomes JOIN battles ON battle = name
 WHERE result = 'sunk'
 ORDER BY name;
 
+/*Намерете името, водоизместимостта и годината на пускане на вода на
+всички кораби, които имат същото име като техния клас.*/
+SELECT name, displacement, launched
+FROM classes JOIN ships ON classes.class = ships.class
+WHERE classes.class = name;
+
+/*Намерете всички класове кораби, от които няма пуснат на вода нито един
+кораб.*/
+SELECT *
+FROM classes LEFT JOIN ships ON classes.class = ships.class
+WHERE launched IS NULL;
+
+/*Изведете името, водоизместимостта и броя оръдия на корабите,
+участвали в битката ‘North Atlantic’, а също и резултата от битката.*/
+SELECT name, displacement, numguns, result
+FROM (classes JOIN ships ON classes.class = ships.class) JOIN outcomes ON ships.name = ship
+WHERE battle = 'North Atlantic';
