@@ -1,4 +1,4 @@
-```sql
+
 /* Да се вмъкне информация за актрисата Nicole Kidman. За нея знаем само, че е родена на
 20.06.1967 */
 
@@ -17,4 +17,4 @@ WHERE networth<30e7;
 
 DELETE FROM MovieStar
 WHERE address IS NULL;
-```
+
